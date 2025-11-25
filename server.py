@@ -101,13 +101,17 @@ def handle_query():
 
     top5_indices = np.argsort(q1_scores)[::-1][:5]
 
+
     top5_doc_ids = [doc_ids.iloc[idx] for idx in top5_indices]
     
     top5_pairs = find_links(top5_doc_ids)
 
-    return jsonify({
-        "top5": top5_pairs
-    }), 200
+    print(top5_pairs)
+
+    # Convert to list of dicts, preserving order
+    ordered_top5 = [{"doc_id": doc_id, "link": top5_pairs[doc_id]} for doc_id in top5_doc_ids]
+
+    return jsonify({"top5": ordered_top5}), 200
 
 
     
