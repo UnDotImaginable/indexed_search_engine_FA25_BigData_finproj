@@ -7,5 +7,7 @@ We then use this table to build document vectors for each document.
 Then, we pre-process any incoming queries the same way we pre-processed the texts to create a query vector. 
 We calculate the cosine similarity between it and all document vectors to retrieve the top 5 most relevant documents to our query.
 
-Also, the .csv files are placed here as .zip files as they in their natural state are too big for GitHub. 
+This project was executed in a **Conda Miniforge** environment. In the project files, you will the find the .yml setup file with the all the packages used in this project.
+
+Also, the .csv files are placed here as .zip files as they, in their natural state ,are too big for GitHub. 
 
