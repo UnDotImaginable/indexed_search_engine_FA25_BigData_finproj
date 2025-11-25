@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Input</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        input {
+            padding: 8px;
+            font-size: 16px;
+            width: 300px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enter Your Query</h1>
+    <input type="text" id="queryInput" placeholder="Type your query here">
+    <button onclick="submitQuery()">Submit</button>
+    <div id="result"></div>
+
+    <script>
+        function submitQuery() {
+            const query = document.getElementById('queryInput').value;
+            if (query.trim() === "") {
+                document.getElementById('result').textContent = "Please enter a query!";
+                return;
+            }
+
+            fetch('http://127.0.0.1:5000/query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ query: query })
+            })
+            .then(response => response.json())
+
+            .then(data => {
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = "";
+
+                    if (data.top5) {
+                        let html = "<h3>Top 5 Results:</h3><ul>";
+
+                        for (const [docId, link] of Object.entries(data.top5)) {
+                            html += `
+                                <li>
+                                    <strong>${docId}</strong>: 
+                                    <a href="${link}" target="_blank">${link}</a>
+                                </li>
+                            `;
+                        }
+
+                        html += "</ul>";
+                        resultDiv.innerHTML = html;
+
+                    } 
+                    
+                    else if (data.message) {
+                        resultDiv.textContent = data.message;
+                    } 
+
+                    else {
+                        resultDiv.textContent = "No results received.";
+                    }
+                })
+
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').textContent = "Error sending query!";
+            });
+        }
+
+
+
+    </script>
+</body>
+</html>
+
+
