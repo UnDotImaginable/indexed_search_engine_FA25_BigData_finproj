@@ -60,14 +60,14 @@
                     if (data.top5) {
                         let html = "<h3>Top 5 Results:</h3><ul>";
 
-                        for (const [docId, link] of Object.entries(data.top5)) {
+                        data.top5.forEach(item => {
                             html += `
                                 <li>
-                                    <strong>${docId}</strong>: 
-                                    <a href="${link}" target="_blank">${link}</a>
+                                    <strong>${item.doc_id}</strong>: 
+                                    <a href="${item.link}" target="_blank">${item.link}</a>
                                 </li>
                             `;
-                        }
+                        });
 
                         html += "</ul>";
                         resultDiv.innerHTML = html;
